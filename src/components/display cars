@@ -1,0 +1,44 @@
+import React, { useState } from 'react';
+
+import Navigation from './Navigation';
+
+function App1() {
+  const [car, setCar] = useState([])
+  function handlePress() {
+    fetch("http://localhost:4000/browse", { method: 'GET' })
+      .then(data => data.json())
+      .then(function (json) {
+        console.log(json);
+        setCar(car => [...json]);
+        console.log(car);
+      });
+    // .then(json =>setCard(card=>[...card,json])  
+  }
+  function displayCar(eachCar) {
+
+    return <div className="card col-4" >
+      <div className="card-body">
+        <h5 className="card-title">{eachCar.title}</h5>
+        <p className="card-text">{eachCar.author}{eachCar.category}</p>
+      </div>
+    </div>
+
+
+
+  }
+
+  return (
+    <div>
+      <Navigation />
+      <button className="btn btn-outline-secondary" onClick={handlePress}>Press me</button>
+      <div class="container">
+        <div class="row">
+          {car.map(displayCar)}
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+
