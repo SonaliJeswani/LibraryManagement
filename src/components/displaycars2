@@ -1,0 +1,228 @@
+import React, { useEffect, useState } from "react";
+import Book from "./Book";
+import { useParams } from "react-router-dom"
+import Man from "./man.png"
+import Navigation from "./Navigation"
+import Footer from "./Footer"
+import bookCard from "./bookCard.png"
+
+function User() {
+  const [inputText, setInputText] = useState("");
+  const [foundBook, setFoundBook] = useState([]);
+  const [allBooks, populateBooks] = useState([]);
+  
+  const [issue, setIssue] = useState(false);
+  const { identity } = useParams()
+  
+  const [userr, setUser] = useState({ name: "", userID: "", surname: "", email: "", phone: "", amountFine: "", books: [] });
+  useEffect(() => {
+    fetch("http://localhost:4000/api/user/" + identity, { method: 'GET' })
+      .then(data => data.json())
+      .then(json => setUser(json));
+    
+   
+    fetch("http://localhost:4000/api/browse", { method: 'GET' })
+      .then(data => data.json())
+      .then(json => { populateBooks([...json]) })
+  }, [])
+
+ 
+  function handleBook(item,handleReturn) {
+    //var bookItem="hello"
+   
+     fetch("http://localhost:4000/api/book/" + item.bookID, { method: 'GET' })
+     .then(data => data.json())
+    .then(json => {console.log(json.title)});
+      
+      console.log("loadedBook");
+    //   console.log("im here");
+     
+    //  return <p className="browseCardText">{bookItem}</p>
+ 
+  // request();
+   
+    // .then(data => data.json())
+    // .then(json => {bookItem=json.title});
+//       .then(data => data.json())
+//       .then((json)=>{
+//         bookItem=json.title;
+//         console.log("book title is"+json.title);
+//          return <p className="browseCardText">{json.title}</p>
+// });
+    
+     
+  }
+
+  function handleTitleClick() {
+
+   
+    fetch("http://localhost:4000/api/browse/title/" + inputText, { method: 'GET' })
+      .then(data => data.json())
+      .then(json => { setFoundBook([...json]) })
+  }
+  function handleCategoryClick() {
+    fetch("http://localhost:4000/api/browse/category/" + inputText, { method: 'GET' })
+      .then(data => data.json())
+      .then(json => { setFoundBook([...json]) })
+  }
+
+  function handleAuthorClick() {
+    fetch("http://localhost:4000/api/browse/author/" + inputText, { method: 'GET' })
+      .then(data => data.json())
+      .then(json => { setFoundBook([...json]) })
+  }
+
+  function handleInputText(event) {
+    setInputText(event.target.value);
+
+  }
+
+  function handleIssueClick(event) {
+    //setUser([{ name: "Sheldon", userID: "C4", surname: "Cooper", email: "s@c.com", phone: "1234", amountFine: "20", books: ["Maths"] }])
+    
+    // console.log(event.target.value)
+    // console.log(allBooks);
+    // if (userr[0].books.length < 3) {
+      fetch("http://localhost:4000/api/user/" + userr._id + "/" + event.target.value + "/issue", { method: "PUT" })
+        .then(data => data.json())
+        .then(json => { console.log("Sucessfully issued") });
+    //   fetch("http://localhost:4000/api/browse", { method: 'GET' })
+    //     .then(data => data.json())
+    //     .then(json => { populateBooks([...json]) });
+      fetch("http://localhost:4000/api/user/" + identity, { method: 'GET' })
+        .then(data => data.json())
+        .then(json => setUser(json));
+
+    // } else {
+    //   console.log("you have already issued 3 books");
+    // }
+  }
+  function handleIssue(element) {
+   
+    return ( <button value={element._id} className="btn btn-sm btn-success" onClick={handleIssueClick}>Issue</button>)
+  }
+  function handleDisplayBooks(b) {
+    return <p className="browseCardText">{b}</p> 
+  }
+
+  function book(element) {
+    if (element) {
+    
+     
+    
+
+      return <div className="bookCard">
+
+
+        <h3 >{element.title}</h3>
+        <div >
+          <img className="bookImgCard" src={bookCard} alt="bookimg" height="80" width="80" />
+          <p className="browseCardText"><span>Title</span> :{element.title}</p>
+          <p className="browseCardText"><span>Author</span>: {element.author}</p>
+          <p className="browseCardText"><span>Publication</span>: {element.publication}</p>
+          <p className="browseCardText">{element.issued ? "Book is already issued" : handleIssue(element)}</p>
+          
+         
+
+
+        </div>
+
+      </div>
+    }
+  }
+  
+  return <div className="User">
+    <Navigation />
+    <h2>Registered User</h2>
+    <div className="bookCard">
+
+
+      <h2 >{userr.name} {userr.surname}</h2>
+      <div >
+        <img className="bookImgCard" src={Man} alt="bookimg" height="80" width="80" />
+        <p className="browseCardText"><span>UserID : </span> {userr.userID}</p>
+        <p className="browseCardText"><span>Email : </span> {userr.email}</p>
+        <p className="browseCardText"><span>Phone Number :</span> {userr.phone}</p>
+        <p className="browseCardText"><span>Amount Fine :</span> {userr.amountFine}</p>
+        <div>
+          {userr.books.map(handleBook)}
+          {/* {loadedBook.map(handleDisplayBooks)} */}
+          </div>
+      </div>
+
+    </div>
+    <div><div className="browseUpper">
+      <input className="browserInput" type="text" placeholder="Search" onChange={handleInputText} />
+      <div className="dropdown">
+        <button className="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Browse
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a className="dropdown-item" onClick={handleAuthorClick}>Author</a>
+          <a className="dropdown-item" onClick={handleCategoryClick}>Category</a>
+          <a className="dropdown-item" onClick={handleTitleClick}>Title</a>
+        </div>
+      </div>
+
+    </div>
+      <div>
+        {foundBook.map(book)}
+      </div>
+      <h2 className="headingBooks" >Books</h2>
+      <div className="browseBooks">
+        {allBooks.map(book)}
+      </div>
+    </div>
+    <Footer />
+  </div>
+
+}
+
+export default User;
+
+
+// Earlier Display Cars
+
+// import React , { useState } from 'react';
+
+// import Navigation from './Navigation';
+
+// function App1() {
+//   const [car, setCar] = useState([])
+//   function handlePress() {
+//     fetch("http://localhost:4000/browse", { method: 'GET' })
+//       .then(data => data.json())
+//       .then(function (json) {
+//         console.log(json);
+//         setCar(car => [...json]);
+//         console.log(car);
+//       });
+//     // .then(json =>setCard(card=>[...card,json])  
+//   }
+//   function displayCar(eachCar) {
+
+//     return <div className="card col-4" >
+//       <div className="card-body">
+//         <h5 className="card-title">{eachCar.title}</h5>
+//         <p className="card-text">{eachCar.author}{eachCar.category}</p>
+//       </div>
+//     </div>
+
+
+
+//   }
+
+//   return (
+//     <div>
+//       <Navigation />
+//       <button className="btn btn-outline-secondary" onClick={handlePress}>Press me</button>
+//       <div class="container">
+//         <div class="row">
+//           {car.map(displayCar)}
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// }
+// // USER

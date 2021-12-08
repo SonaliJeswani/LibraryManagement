@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import bookCard from "./bookCard.png"
 
-function Book(props){
+function Book(){
     const [inputText,setInputText]=useState("");
     const [foundBook,setFoundBook]=useState([]);
     const [allBooks,populateBooks]=useState([]);
@@ -37,9 +37,7 @@ function Book(props){
     function book(element){
            if(element){
       console.log(element);
-      function handleElement(){
-        return <button className="btn btn-sm btn-success button-issue">Issue</button>
-      }
+     
       return <div className="bookCard">
        
         
@@ -50,7 +48,7 @@ function Book(props){
             <p className="browseCardText"><span>Author</span>: {element.author}</p>
             <p className="browseCardText"><span>Publication</span>: {element.publication}</p>
             <p className="browseCardText">{element.issued?"Book is already issued":"Not issued"}</p>
-            {props.issue=="yes"?handleElement():null}
+            
           
           </div>
 
