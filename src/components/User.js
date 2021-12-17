@@ -11,6 +11,8 @@ function User(){
   const [inputText,setInputText]=useState("");
   const [foundBook,setFoundBook]=useState([]);
   const [allBooks,populateBooks]=useState([]);
+  const [issueText,setIssueText]=useState("");
+  const [bookId,setBookId]=useState("");
   const [issue,setIssue]=useState(false);
     const {identity}=useParams()
     console.log(identity);
@@ -26,6 +28,7 @@ function User(){
          .then(data => data.json()) 
          .then(json => { populateBooks([...json])})
     },[])
+   
     useEffect(()=>{
       fetch("http://localhost:4000/api/user/"+identity, { method: 'GET' })
       .then(data => data.json()) 
@@ -38,7 +41,11 @@ function User(){
     function handleBook(item){
       console.log("item is");
       console.log(item);
-      return <p className="browseCardText"><span>Book :</span> {item.bookID}</p>
+    // fetch("http://localhost:4000/api/book/"+item.bookID, { method: 'GET' })
+    //   .then(data => data.json())
+    //    .then(json => {setBookId(json.title)});
+    return <p>{item.bookID}</p>
+    
     }
     function handleTitleClick(){
        
@@ -65,9 +72,15 @@ function User(){
 function handleIssue(event){
   console.log("User id is "+userr._id);
   console.log("Book Id is"+event.target.value);
-  fetch("http://localhost:4000/api/user/" + userr._id + "/" + event.target.value + "/issue", { method: "PUT" })
-  .then(data => data.json())
-  .then(json => {setIssue(!issue) });
+  console.log(userr.books.length);
+  if(userr.books.length<3){
+    fetch("http://localhost:4000/api/user/" + userr._id + "/" + event.target.value + "/issue", { method: "PUT" })
+    .then(data => data.json())
+    .then(json => {setIssue(!issue) });
+    setIssueText("Issued")
+  }else{
+     setIssueText("Can't issue book because you already have 3 books")
+  }
 }
 function book(element){
     if(element){
@@ -109,6 +122,8 @@ return <div className="bookCard">
        </div>
 
      </div>
+     <br />
+    <div><h3 className="issueText">{issueText}</h3></div>
      <div><div className="browseUpper">
       <input className="browserInput" type="text" placeholder="Search" onChange={handleInputText}/>
         <div className="dropdown">
@@ -121,8 +136,10 @@ return <div className="bookCard">
     <a className="dropdown-item" onClick={handleTitleClick}>Title</a>
   </div>
 </div>
-     
+ 
     </div>
+
+   
     <div>
     {foundBook.map(book)}
     </div>

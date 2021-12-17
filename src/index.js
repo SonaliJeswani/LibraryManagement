@@ -8,6 +8,7 @@ import About from './components/About'
 import Browse from "./components/Browse"
 import Signup from "./components/SignUp"
 import User from "./components/User"
+import SignIn from "./components/SignIn"
 ReactDOM.render(
 
   <BrowserRouter>
@@ -19,6 +20,7 @@ ReactDOM.render(
   <Route path="/browse" element={<Browse />}/>
   <Route path="/signup" element={<Signup />}/>
   <Route path="/user/:identity" element={<User />}/>
+  <Route path="/signIn" element={<SignIn />}/>
   </Routes>
     
   </BrowserRouter>,

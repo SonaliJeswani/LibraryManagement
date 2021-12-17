@@ -227,6 +227,11 @@ body{
 
 }
 
+.issueText{
+    margin-left: 2rem;
+    color: #FFB085 ;
+}
+
 /* Issue Button */
 
 .button-issue{

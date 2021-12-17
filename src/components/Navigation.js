@@ -34,7 +34,7 @@ function Navigation() {
                 </li>
             </ul>
             <form className="form-inline ml-auto">
-                <Link to={"/contact"} >
+                <Link to={"/signIn"} >
                     <button className="btn btn-sm btn-outline" type="button">Sign in</button>
                 </Link>
                 <Link to={"/signup"} >
