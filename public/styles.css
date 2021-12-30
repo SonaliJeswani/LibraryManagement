@@ -121,6 +121,7 @@ body{
 }
 .bookCard{
     max-width:fit-content;
+    /* width:40rem; */
     min-height: 200px;
     border:1px solid grey;
     padding:1rem;
@@ -239,7 +240,53 @@ body{
     margin-bottom: 1rem;
 }
 
+/*Sign In form */
+.sign-in-form{
+    background-color: #FEF1E6;
+    height: 100vh;
+    text-align: center;
+}
 
+.sign-in-form h1{
+   padding-bottom: 2rem;
+   padding-top:2rem;
+   
+}
 
+.sign-in-form button{
+    margin-top: 1rem;
+}
 
+.background{
+    
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    
+}
+.background h6{
+    margin-left: 1rem;
+}
+
+/* Admin */
+
+.custom-button{
+    color:black;
+    
+    background-color:#F7F7F7 ;
+    width:51%;
+    margin-bottom: 1rem;
+    height: 4rem;
+    text-align: center;
+    margin-left:24%;
+   
+}
+
+.custom-button:hover{
+    border:1px solid #FFB085 ;
+    background-color: #FEF1E6;
+    color: #FFB085;
+
+}
     

@@ -44,7 +44,8 @@ function User(){
     // fetch("http://localhost:4000/api/book/"+item.bookID, { method: 'GET' })
     //   .then(data => data.json())
     //    .then(json => {setBookId(json.title)});
-    return <p>{item.bookID}</p>
+    // return <p>{item.bookID}</p>
+    return <p>Book issued</p>
     
     }
     function handleTitleClick(){
@@ -73,13 +74,13 @@ function handleIssue(event){
   console.log("User id is "+userr._id);
   console.log("Book Id is"+event.target.value);
   console.log(userr.books.length);
-  if(userr.books.length<3){
+  if(userr.books.length<2){
     fetch("http://localhost:4000/api/user/" + userr._id + "/" + event.target.value + "/issue", { method: "PUT" })
     .then(data => data.json())
     .then(json => {setIssue(!issue) });
     setIssueText("Issued")
   }else{
-     setIssueText("Can't issue book because you already have 3 books")
+     setIssueText("Can't issue book because you already have 2 books")
   }
 }
 function book(element){
@@ -95,7 +96,7 @@ return <div className="bookCard">
      <p className="browseCardText"><span>Title</span> :{element.title}</p>
      <p className="browseCardText"><span>Author</span>: {element.author}</p>
      <p className="browseCardText"><span>Publication</span>: {element.publication}</p>
-     <p className="browseCardText">{element.issued?"Book is already issued":<button value={element._id} onClick={handleIssue} className="btn btn-sm btn-success">Issue</button>}</p>
+     <p className="browseCardText">{element.issued?"Issued":<button value={element._id} onClick={handleIssue} className="btn btn-sm btn-success">Issue</button>}</p>
      
    
    </div>
@@ -112,10 +113,10 @@ return <div className="bookCard">
        <h2 >{userr.name} {userr.surname}</h2>
        <div >
        <img className="bookImgCard" src={Man} alt="bookimg" height="80" width="80"  />
-         <p className="browseCardText"><span>UserID : </span> :{userr.userID}</p>
-         <p className="browseCardText"><span>Email : </span>: {userr.email}</p>
-         <p className="browseCardText"><span>Phone Number :</span>: {userr.phone}</p>
-         <p className="browseCardText"><span>Amount Fine :</span>: {userr.amountFine}</p>
+         <p className="browseCardText"><span>UserID  </span> :{userr.userID}</p>
+         <p className="browseCardText"><span>Email  </span>: {userr.email}</p>
+         <p className="browseCardText"><span>Phone Number </span>: {userr.phone}</p>
+         <p className="browseCardText"><span>Amount Fine </span>: {userr.amountFine}</p>
          {(userr.books).map(handleBook)}
       
        
